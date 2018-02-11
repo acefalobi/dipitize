@@ -39,6 +39,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_create_challenge" />
+    <include layout="@layout/content_play" />
 
 </android.support.design.widget.CoordinatorLayout>

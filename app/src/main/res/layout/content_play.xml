@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:padding="10dp"
-            android:text="Choose what how much and how long you want to play and click on  'Create Challenge' to upload your image. Then relax and wait for someone to accept the challenge."/>
+            android:text="Click 'Play' to upload your photo into the contest. Please relax. We'll pair you up with an available player in no time."/>
 
         <android.support.v7.widget.AppCompatImageView
             android:layout_marginTop="10dp"
@@ -38,14 +38,27 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:text="Select Category"/>
+            android:text="Fighting For?"/>
+
+        <Spinner
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner_amount"
+            android:spinnerMode="dropdown" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:text="Select Interest"/>
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/spinner_category"
             android:spinnerMode="dropdown" />
-
         <!--<TextView-->
         <!--android:textSize="20sp"-->
         <!--android:layout_marginTop="10dp"-->
@@ -82,7 +95,7 @@
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create Challenge"/>
+            android:text="Play"/>
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

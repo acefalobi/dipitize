@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@android:color/black"
     android:layout_height="match_parent"
     tools:context="com.dipitize.app.dipitize.activity.ChallengeActivity">
+    <ImageView
+        android:id="@+id/image_challenge"
+        android:scaleType="fitCenter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="Game1 Image" />
 
-</android.support.constraint.ConstraintLayout>
+    <ProgressBar
+        android:id="@+id/progress_challenge"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_centerInParent="true"
+        android:layout_width="64dp"
+        android:layout_height="64dp" />
+</RelativeLayout>

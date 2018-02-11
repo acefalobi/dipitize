@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.countritv.app.countritv">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name="com.dipitize.app.dipitize.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <service android:name="com.dipitize.app.dipitize.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name="com.dipitize.app.dipitize.MyFirebaseInstantIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_notify" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.SignUpActivity"
+            android:label="@string/title_activity_sign_up"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.PlayActivity"
+            android:label="@string/title_activity_play"
+            android:parentActivityName="com.dipitize.app.dipitize.activity.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.HomeActivity" />
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.GameActivity"
+            android:label="@string/title_activity_game"
+            android:parentActivityName="com.dipitize.app.dipitize.activity.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.HomeActivity" />
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.AccountActivity"
+            android:label="@string/title_activity_account"
+            android:parentActivityName="com.dipitize.app.dipitize.activity.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.HomeActivity" />
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.FundAccountActivity"
+            android:label="@string/title_activity_fund_account"
+            android:parentActivityName="com.dipitize.app.dipitize.activity.AccountActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.AccountActivity" />
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.MatchChallengeActivity"
+            android:label="Select Challenge To Match..."
+            android:parentActivityName="com.dipitize.app.dipitize.activity.AdminActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.AdminActivity" />
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.ChooseJudgesActivity"
+            android:label="Select Judges..."
+            android:parentActivityName="com.dipitize.app.dipitize.activity.MatchChallengeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.MatchChallengeActivity" />
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.AdminActivity"
+            android:label="Dipitize: Admin"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value="com.dipitize.app.dipitize.activity.SearchUsersActivity" />
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.SearchUsersActivity"
+            android:label="Search"
+            android:parentActivityName="com.dipitize.app.dipitize.activity.AdminActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.AdminActivity" />
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.NotificationsActivity"
+            android:label="Notifications"
+            android:parentActivityName="com.dipitize.app.dipitize.activity.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.AdminActivity" />
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.AdminINfoActivity"
+            android:label="Admin Info">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.AdminActivity" />
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.InboxActivity"
+            android:label="Inbox">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.AccountActivity" />
+        </activity>
+        <activity
+            android:name="com.dipitize.app.dipitize.activity.ChallengeActivity"
+            android:label="Challenge">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.AdminActivity" />
+        </activity>
+        <activity android:name="com.dipitize.app.dipitize.activity.ChatActivity"
+            android:label="Loading...">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dipitize.app.dipitize.activity.HomeActivity" />
+        </activity>
+    </application>
+
+</manifest>

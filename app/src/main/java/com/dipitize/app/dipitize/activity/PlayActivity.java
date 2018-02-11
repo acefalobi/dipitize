@@ -18,9 +18,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.countritv.app.countritv.R;
+import com.dipitize.app.dipitize.MyApplication;
 import com.dipitize.app.dipitize.model.Challenge;
+import com.dipitize.app.dipitize.model.Notification;
 import com.dipitize.app.dipitize.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,8 +39,9 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class PlayActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class PlayActivity extends AppCompatActivity implements View.OnClickListener {
 
     static final int UPLOAD_IMAGE = 1000;
     static final int UPLOAD_VIDEO = 1001;
@@ -54,16 +58,20 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     User currentUser;
 
     Spinner spinnerCategory;
+    Spinner spinnerAmount;
+
     Button buttonCreateChallenge;
 //    RadioButton radioImage, radioVideo;
 
     ProgressDialog progressDialog;
-    int selectedCategory;
+
+    String selectedCategory;
+    int selectedAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_challenge);
+        setContentView(R.layout.activity_play);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -91,18 +99,82 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         progressDialog.setCancelable(false);
 
         spinnerCategory = (Spinner) findViewById(R.id.spinner_category);
-        spinnerCategory.setOnItemSelectedListener(this);
+        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        selectedCategory = "#Funny";
+                        break;
+                    case 1:
+                        selectedCategory = "#Fashion";
+                        break;
+                    case 2:
+                        selectedCategory = "#Selfie";
+                        break;
+                    case 3:
+                        selectedCategory = "#Inspirational";
+                        break;
+                    case 4:
+                        selectedCategory = "#Photography";
+                        break;
+                    case 5:
+                        selectedCategory = "#MakeUp";
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinnerAmount = (Spinner) findViewById(R.id.spinner_amount);
+        spinnerAmount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        selectedAmount = 0;
+                        break;
+                    case 1:
+                        selectedAmount = 50;
+                        break;
+                    case 2:
+                        selectedAmount = 500;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         List<String> categories = new ArrayList<>();
-        categories.add("N50 / 30 min");
-        categories.add("N500 / 5 hours");
-        categories.add("N1000 / 10 hours");
-        categories.add("N5000 / 24 hours");
+        categories.add("#Funny");
+        categories.add("#Fashion");
+        categories.add("#Selfie");
+        categories.add("#Inspirational");
+        categories.add("#Photography");
+        categories.add("#MakeUp");
+
+        List<String> amounts = new ArrayList<>();
+        amounts.add("Honor (Free)");
+        amounts.add("N50");
+        amounts.add("N500");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerCategory.setAdapter(adapter);
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, amounts);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerAmount.setAdapter(adapter);
 
 //        radioImage = (RadioButton) findViewById(R.id.radio_image);
 //        radioVideo = (RadioButton) findViewById(R.id.radio_video);
@@ -148,8 +220,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         if (view.getId() == R.id.button_create_challenge) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                    .setTitle("Accept Challenge")
-                    .setMessage("Are you sure you want to upload an image and create this challenge")
+                    .setTitle("Play Game")
+                    .setMessage("Are you sure you want to upload an image and play this game")
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
@@ -169,14 +241,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
 
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
-//            if (radioImage.isChecked()) {
-//                Intent intent = new Intent(Intent.ACTION_PICK);
-//                intent.setType("image/*");
-//                intent.setAction(Intent.ACTION_GET_CONTENT);
-//                startActivityForResult(Intent.createChooser(intent, "Select Image"), UPLOAD_IMAGE);
-//            }
-//            else if (radioVideo.isChecked()) {
-//            }
         }
     }
 
@@ -199,31 +263,44 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void createChallenge(final StorageReference storageReference) {
-        users.addValueEventListener(new ValueEventListener() {
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
-                Challenge challenge = new Challenge(selectedCategory, storageReference.getName(), currentUser, false);
-                challenges.push().setValue(challenge);
-                progressDialog.dismiss();
-                Snackbar.make(buttonCreateChallenge, "Challenge Created",Snackbar.LENGTH_LONG).show();
+                Map<String, Object> userValues = currentUser.toMap();
+                if (currentUser.balance >= selectedAmount) {
+                    userValues.put("balance", currentUser.balance - selectedAmount);
+                    users.updateChildren(userValues, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError == null) {
+                                Challenge challenge = new Challenge(selectedAmount, storageReference.getName(), FirebaseAuth.getInstance().getCurrentUser().getUid(), currentUser, selectedCategory);
+                                challenges.push().setValue(challenge);
+                                progressDialog.dismiss();
+                                Notification notification = new Notification(dataSnapshot.getKey(), "Your photo has been successfully uploaded for the contest, your game starts soon");
+                                database.child("notifications").push().setValue(notification);
+                                MyApplication.getInstance().sendFCM(currentUser.fcmId, "Your photo has been successfully uploaded for the contest, your game starts soon");
+                                Toast.makeText(PlayActivity.this, "Match-up Process Started", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(PlayActivity.this, HomeActivity.class));
+                                finish();
+                            } else {
+                                progressDialog.dismiss();
+                                Snackbar.make(buttonCreateChallenge, databaseError.toException().getMessage(), Snackbar.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                } else {
+                    progressDialog.dismiss();
+                    Snackbar.make(buttonCreateChallenge, "Insufficient funds", Snackbar.LENGTH_LONG).show();
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                progressDialog.dismiss();
                 Snackbar.make(buttonCreateChallenge, "Error retrieving data", Snackbar.LENGTH_LONG).show();
             }
         });
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        selectedCategory = i + 1;
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 
     @Override

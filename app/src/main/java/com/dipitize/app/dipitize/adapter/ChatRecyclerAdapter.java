@@ -19,12 +19,12 @@ import java.util.List;
  * Made by acefalobi on 3/31/2017.
  */
 
-public class MessagesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ChatRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Message> messages;
     private String userId;
 
-    public MessagesRecyclerAdapter(String userId, List<Message> messages) {
+    public ChatRecyclerAdapter(String userId, List<Message> messages) {
         this.messages = messages;
         this.userId = userId;
     }
@@ -32,7 +32,7 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
-        return new MessagesRecyclerAdapter.ItemHolder(view);
+        return new ChatRecyclerAdapter.ItemHolder(view);
     }
 
     @Override
@@ -53,13 +53,15 @@ public class MessagesRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
             params.weight = 1.0f;
             params.gravity = Gravity.END;
             itemHolder.textInfo.setLayoutParams(params);
-            itemHolder.textInfo.setText( message.user.username + " • " + timeSent);
+            itemHolder.textMessage.setLayoutParams(params);
+            itemHolder.textInfo.setText("You • " + timeSent);
         } else {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.weight = 1.0f;
             params.gravity = Gravity.START;
             itemHolder.textInfo.setLayoutParams(params);
-            itemHolder.textInfo.setText("Admin • " + timeSent);
+            itemHolder.textMessage.setLayoutParams(params);
+            itemHolder.textInfo.setText(message.user.username + " • " + timeSent);
         }
         itemHolder.textMessage.setText(message.message);
     }

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "984450936368",
+    "firebase_url": "https://dipitize.firebaseio.com",
+    "project_id": "dipitize",
+    "storage_bucket": "dipitize.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984450936368:android:a6e55f638bae79f8",
+        "android_client_info": {
+          "package_name": "com.dipitize.app.dipitize"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "984450936368-ivbpco75cbdf8pf6vio8bq6bf557uh1g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkzqFDjo2eMQyyEo-jtnUY_rMYKBy5dgs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

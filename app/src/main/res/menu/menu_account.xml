@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.dipitize.app.dipitize.activity.AccountActivity">
 
+    <item android:title="Inbox Admin"
+        android:id="@+id/action_inbox_admin" />
+    <item android:title="About Dipitize"
+        android:id="@+id/action_about" />
 </menu>
